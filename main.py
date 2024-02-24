@@ -3,10 +3,11 @@ from Adafruit_IO import MQTTClient
 import time
 import random
 from simpleai import *
+from uart import *
 
 AIO_FEED_IDs = ["button1", "button2"]
 AIO_USERNAME = "lequochung"
-AIO_KEY = "aio_cHEG78FwB2A2updJlbwgabfStfwO"
+AIO_KEY = "aio_pmwG01alNOmWfJl6OvQaEPnluGpV"
 
 def connected(client):
     print("Ket noi thanh cong ...")
@@ -34,26 +35,26 @@ counter = 10
 sensor_type = 0
 counter_ai = 5
 while True:
-    counter = counter -1
-    if counter <=0:
-      counter = 10
-      #TODO
-      print("Random data is publishing...")
-      if sensor_type == 0:
-          print("Temperature...")
-          temp = random.randint(10, 20)
-          client.publish("cambien1" , temp)
-          sensor_type = 1
-      elif sensor_type == 1:
-          print("Humidity...")
-          humi = random.randint(50, 70)
-          client.publish("cambien2" , temp)
-          sensor_type = 2
-      elif sensor_type == 2:
-          print("Light...")
-          light = random.randint(100, 500)
-          client.publish("cambien3" , light)
-          sensor_type = 0
+    # counter = counter -1
+    # if counter <=0:
+    #   counter = 10
+    #   #TODO
+    #   print("Random data is publishing...")
+    #   if sensor_type == 0:
+    #       print("Temperature...")
+    #       temp = random.randint(10, 20)
+    #       client.publish("cambien1" , temp)
+    #       sensor_type = 1
+    #   elif sensor_type == 1:
+    #       print("Humidity...")
+    #       humi = random.randint(50, 70)
+    #       client.publish("cambien2" , temp)
+    #       sensor_type = 2
+    #   elif sensor_type == 2:
+    #       print("Light...")
+    #       light = random.randint(100, 500)
+    #       client.publish("cambien3" , light)
+    #       sensor_type = 0
     
     counter_ai = counter_ai -1
     if counter_ai <= 0:
@@ -62,5 +63,6 @@ while True:
         print("AI Output: ", ai_result)
         client.publish("ai", ai_result)
 
+    readSerial(client)
     time.sleep(1)
     pass
