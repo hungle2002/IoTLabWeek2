@@ -5,9 +5,9 @@ import random
 from simpleai import *
 from uart import *
 
-AIO_FEED_IDs = ["button1", "button2"]
+AIO_FEED_IDs = ["nutnhan1", "nutnhan2"]
 AIO_USERNAME = "lequochung"
-AIO_KEY = "aio_pmwG01alNOmWfJl6OvQaEPnluGpV"
+AIO_KEY = "aio_mKrg95qh7OkSvlDp0UjNUBffzmvh"
 
 def connected(client):
     print("Ket noi thanh cong ...")
@@ -22,7 +22,17 @@ def disconnected(client):
     sys.exit (1)
 
 def message(client , feed_id , payload):
-    print("Nhan du lieu: " + payload)
+    print("Nhan du lieu: " + payload + ", feed id: " + feed_id)
+    if feed_id == "nutnhan1":
+        if payload == "0":
+            writeData(1)
+        else:
+            writeData(2)
+    if feed_id == "nutnhan2":
+        if payload == "0":
+            writeData(3)
+        else:
+            writeData(4)
 
 client = MQTTClient(AIO_USERNAME , AIO_KEY)
 client.on_connect = connected
@@ -58,7 +68,7 @@ while True:
     
     counter_ai = counter_ai -1
     if counter_ai <= 0:
-        counter_ai = 5
+        counter_ai = 10
         ai_result = image_detector()
         print("AI Output: ", ai_result)
         client.publish("ai", ai_result)
